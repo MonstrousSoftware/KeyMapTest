@@ -14,8 +14,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-//import org.lwjgl.glfw.GLFW;
-
 // key bindings menu
 // shows key bindings and allows the user to modify them
 
@@ -27,7 +25,7 @@ public class KeysScreen extends InputAdapter implements Screen {
     private Skin skin;
     private TextButton pressedButton;
     private KeyBinding selectedBinding;
-    private Label debugLabel;
+    private Label promptLabel;
 
     public KeysScreen(Main game) {
         this.game = game;
@@ -54,7 +52,12 @@ public class KeysScreen extends InputAdapter implements Screen {
     }
 
     private String keyName( int keycode ){
-        return Input.Keys.toString(keycode);
+        return game.keyNameMapper.getKeyName(keycode);
+
+        // Note: Input.Keys.toString() follows US keyboard layout in naming keys
+        // It should really present the name following the regional keyboard setting.
+        // Waiting for libGDX issue #6962 to be resolved.
+        //return Input.Keys.toString(keycode);
     }
 
 
@@ -87,18 +90,16 @@ public class KeysScreen extends InputAdapter implements Screen {
 
 
         }
-        // Note: Input.Keys.toString() follows US keyboard layout in naming keys
-        // It should really present the name following the regional keyboard setting.
-        // Waiting for libGDX issue #6962 to be resolved.
+
 
         TextButton reset = new TextButton(" RESET ", skin);
         TextButton okay = new TextButton(" OK ", skin);
 
-        debugLabel = new Label("To modify a key binding, click a button", skin);
+        promptLabel = new Label("To modify a key binding, click a button", skin);
 
         screenTable.top();
         screenTable.add(keyTable).pad(50).row();
-        screenTable.add(debugLabel).pad(20).row();
+        screenTable.add(promptLabel).pad(20).row();
         screenTable.add(reset).width(200).pad(10).row();
         screenTable.add(okay).width(200).pad(10).row();
         screenTable.pack();
@@ -136,20 +137,19 @@ public class KeysScreen extends InputAdapter implements Screen {
         pressedButton.setText("???");
         pressedButton.setColor(Color.RED);
         selectedBinding = binding;
-        debugLabel.setText("Press the key to assign to this action (ESC to cancel)");
+        promptLabel.setText("Press the key to assign to this action (ESC to cancel)");
     }
 
     @Override
     public boolean keyDown(int keycode) {
         if(selectedBinding == null)
             return false;
-        debugLabel.setText("keycode : "+keycode);
+        promptLabel.setText("To modify a key binding, click a button");
         if(keycode != Input.Keys.ESCAPE) {
             selectedBinding.setKeyBinding(keycode);
             removeDupes(selectedBinding, keycode);
         }
         pressedButton.setText(keyName(selectedBinding.getKeyCode()));
-        //pressedButton.setText(Input.Keys.toString(selectedBinding.getKeyCode()));
         pressedButton.setColor(Color.WHITE);
         selectedBinding = null;
 
