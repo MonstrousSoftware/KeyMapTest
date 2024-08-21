@@ -30,7 +30,8 @@ LibGDX translates it to zero (unknown key). Should maybe be translated to Input.
 - To fully internationalize your game, you might also want to translate some of the key names, e.g. "Espace" instead of "Space".
 
 - The key bindings are persistent (stored via Preferences). They are stored as key codes (position codes) and will be displayed following the active keyboard region.
- 
+
+ ![screenshot](screenshot.png)
 
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
