@@ -57,7 +57,7 @@ public class KeysScreen extends InputAdapter implements Screen {
         // Note: Input.Keys.toString() follows US keyboard layout in naming keys
         // It should really present the name following the regional keyboard setting.
         // Waiting for libGDX issue #6962 to be resolved.
-        //return Input.Keys.toString(keycode);
+        // return Input.Keys.toString(keycode);
     }
 
 
